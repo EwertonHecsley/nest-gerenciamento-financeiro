@@ -1,7 +1,8 @@
-import { Body, Controller, HttpStatus, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { UsuarioService } from './usuario.service';
 import { UsuarioDto } from './dto/usuario.dto';
-import { Response } from 'express';
+import { Request, Response } from 'express';
+import { JwtAuthGuard } from 'src/auth/guards/jwt.guards';
 
 @Controller('usuario')
 export class UsuarioController {
@@ -15,5 +16,16 @@ export class UsuarioController {
         const { senha: _, ...usuario } = resultado;
 
         return res.status(HttpStatus.CREATED).json({ mensagem: 'Usuário cadastrado com sucesso.', usuario });
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Get()
+    async getUser(@Req() req: Request, @Res() res: Response): Promise<Object> {
+        const { id } = req.user as UsuarioDto;
+
+        const result = await this.usuarioService.findUserById(id);
+        const { senha: _, ...usuario } = result;
+
+        return res.status(HttpStatus.OK).json(usuario);
     }
 }
