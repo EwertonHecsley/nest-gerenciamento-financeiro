@@ -25,4 +25,12 @@ export class UsuarioService {
             }
         })
     }
+
+    async findUserByEmail(email: string): Promise<UsuarioDto> {
+        return await this.prisma.usuario.findUnique({ where: { email } });
+    }
+
+    async findUserById(id: number): Promise<UsuarioDto> {
+        return await this.prisma.usuario.findFirst({ where: { id } });
+    }
 }
