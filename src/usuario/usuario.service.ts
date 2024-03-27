@@ -33,4 +33,21 @@ export class UsuarioService {
     async findUserById(id: number): Promise<UsuarioDto> {
         return await this.prisma.usuario.findFirst({ where: { id } });
     }
+
+    async updateUser(dataUser: UsuarioDto, id: number): Promise<UsuarioDto> {
+        const { nome, email, senha } = dataUser;
+
+        const hashPassword = await bcrypt.hash(senha, 10);
+
+        return await this.prisma.usuario.update({
+            where: {
+                id
+            },
+            data: {
+                nome,
+                email,
+                senha: hashPassword
+            }
+        })
+    }
 }

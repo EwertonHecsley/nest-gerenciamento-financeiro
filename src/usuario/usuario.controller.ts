@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpStatus, Post, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Post, Put, Req, Res, UseGuards } from '@nestjs/common';
 import { UsuarioService } from './usuario.service';
 import { UsuarioDto } from './dto/usuario.dto';
 import { Request, Response } from 'express';
@@ -16,6 +16,16 @@ export class UsuarioController {
         const { senha: _, ...usuario } = resultado;
 
         return res.status(HttpStatus.CREATED).json({ mensagem: 'Usuário cadastrado com sucesso.', usuario });
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Put()
+    async update(@Body() userData: UsuarioDto, @Req() req: Request, @Res() res: Response) {
+        const { id } = req.user as UsuarioDto;
+
+        await this.usuarioService.updateUser(userData, id);
+
+        return res.status(HttpStatus.NO_CONTENT).send();
     }
 
     @UseGuards(JwtAuthGuard)
