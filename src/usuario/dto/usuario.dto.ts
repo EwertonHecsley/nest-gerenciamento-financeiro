@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsString, Min } from "class-validator";
+import { IsEmail, IsNotEmpty, IsOptional, IsString, MinLength } from "class-validator";
 
 export class UsuarioDto {
 
@@ -13,7 +13,7 @@ export class UsuarioDto {
 
     @IsNotEmpty({ message: 'O campo senha é obrigatório.' })
     @IsString()
-    @Min(4, { message: 'Senha deve ter no mínimo 4 caracteres.' })
+    @MinLength(4, { message: 'Senha deve ter no mínimo 4 caracteres.' })
     senha: string;
 
     @IsOptional()
