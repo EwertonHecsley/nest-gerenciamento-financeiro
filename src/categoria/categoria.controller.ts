@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, Put, Req, Res, UseGuards } from '@nestjs/common';
 import { CategoriaService } from './categoria.service';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guards';
 import { Request, Response } from 'express';
@@ -20,6 +20,16 @@ export class CategoriaController {
         const categoria = await this.categoriaService.create(id, descricao);
 
         return res.status(HttpStatus.CREATED).json(categoria);
+    }
+
+    @Put(':id')
+    async updateCategoria(@Param('id') categoria_id: string, @Body() dataCategoria: CategoriaDto, @Req() req: Request, @Res() res: Response) {
+        const { id } = req.user as UsuarioDto;
+        const { descricao } = dataCategoria;
+
+        await this.categoriaService.update(id, parseInt(categoria_id), descricao);
+
+        return res.status(HttpStatus.NO_CONTENT).send();
     }
 
     @Get(':id')
