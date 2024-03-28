@@ -15,4 +15,8 @@ export class CategoriaService {
     async create(id: number, descricao: string): Promise<CategoriaDto> {
         return await this.prismaService.categoria.create({ data: { descricao, usuario_id: id } });
     }
+
+    async detail(user_id: number, categoria_id: number): Promise<CategoriaDto> {
+        return await this.prismaService.categoria.findFirst({ where: { id: categoria_id, usuario_id: user_id } });
+    }
 }
