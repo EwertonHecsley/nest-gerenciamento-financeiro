@@ -4,9 +4,10 @@ import { AuthModule } from './auth/auth.module';
 import { UsuarioMiddleware } from './usuario/middleware/usuario.middleware';
 import { UsuarioService } from './usuario/usuario.service';
 import { PrismaService } from './database/prisma/prisma.service';
+import { CategoriaModule } from './categoria/categoria.module';
 
 @Module({
-  imports: [UsuarioModule, AuthModule],
+  imports: [UsuarioModule, AuthModule, CategoriaModule],
   controllers: [],
   providers: [PrismaService, UsuarioService],
 })
