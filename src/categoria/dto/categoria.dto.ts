@@ -11,6 +11,9 @@ export class CategoriaDto {
     usuario_id?: number;
 
     @IsOptional()
+    transacao?: any[]
+
+    @IsOptional()
     @IsNumber()
     id?: number
 }

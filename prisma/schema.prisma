@@ -13,7 +13,7 @@ model Usuario {
   email      String      @unique
   senha      String
   categorias Categoria[]
-  Transacao  Transacao[]
+  transacao  Transacao[]
 
   @@map("usuarios")
 }
@@ -23,7 +23,7 @@ model Categoria {
   usuarioId  Usuario     @relation(fields: [usuario_id], references: [id])
   usuario_id Int
   descricao  String
-  Transacao  Transacao[]
+  transacao  Transacao[]
 
   @@map("categorias")
 }

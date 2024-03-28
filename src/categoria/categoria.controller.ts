@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, Put, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put, Req, Res, UseGuards } from '@nestjs/common';
 import { CategoriaService } from './categoria.service';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guards';
 import { Request, Response } from 'express';
@@ -32,12 +32,23 @@ export class CategoriaController {
         return res.status(HttpStatus.NO_CONTENT).send();
     }
 
+    @Delete(':id')
+    async deleteCategoria(@Param('id') categoria_id: string, @Req() req: Request, @Res() res: Response) {
+        const { id } = req.user as UsuarioDto;
+
+        await this.categoriaService.deleteCategory(id, parseInt(categoria_id));
+
+        return res.status(HttpStatus.NO_CONTENT).send();
+    }
+
     @Get(':id')
     async detailCategoria(@Param('id') param_id: string, @Req() req: Request, @Res() res: Response) {
         const { id } = req.user as UsuarioDto;
 
-        const categoria = await this.categoriaService.detail(id, parseInt(param_id));
-        if (!categoria) throw new HttpException('Categoria não encontrada.', HttpStatus.NOT_FOUND);
+        const result = await this.categoriaService.detail(id, parseInt(param_id));
+        if (!result) throw new HttpException('Categoria não encontrada.', HttpStatus.NOT_FOUND);
+
+        const { transacao: _, ...categoria } = result;
 
         return res.status(HttpStatus.OK).json(categoria);
     }
