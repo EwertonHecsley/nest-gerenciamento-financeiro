@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, 
 import { CategoriaService } from './categoria.service';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guards';
 import { Request, Response } from 'express';
-import { UsuarioDto } from 'src/usuario/dto/usuario.dto';
+import { UsuarioDto } from 'src/domain/usuario/dto/usuario.dto';
 import { CategoriaDto } from './dto/categoria.dto';
 
 @UseGuards(JwtAuthGuard)
