@@ -1,8 +1,9 @@
-import { Controller, Get, HttpException, HttpStatus, Param, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { TransacaoService } from './transacao.service';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guards';
 import { Request, Response } from 'express';
 import { UsuarioDto } from 'src/usuario/dto/usuario.dto';
+import { TransacaoDto } from './dto/transacao.dto';
 
 @UseGuards(JwtAuthGuard)
 @Controller('transacao')
@@ -10,6 +11,15 @@ export class TransacaoController {
     constructor(
         private readonly transacaoService: TransacaoService
     ) { }
+
+    @Post()
+    async create(@Body() dataTransacao: TransacaoDto, @Req() req: Request, @Res() res: Response) {
+        const { id } = req.user as UsuarioDto;
+
+        const transacao = await this.transacaoService.create(id, dataTransacao);
+
+        return res.status(HttpStatus.CREATED).json(transacao);
+    }
 
     @Get(':id')
     async detalharTransacao(@Param('id') transacao_id: string, @Req() req: Request, @Res() res: Response) {

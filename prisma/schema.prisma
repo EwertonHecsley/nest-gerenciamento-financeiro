@@ -32,7 +32,7 @@ model Transacao {
   id             Int       @id @default(autoincrement())
   descricao      String
   valor          Int
-  data_transacao DateTime
+  data_transacao String
   categoriaId    Categoria @relation(fields: [categoria_id], references: [id])
   categoria_id   Int
   usuarioId      Usuario   @relation(fields: [usuario_id], references: [id])
