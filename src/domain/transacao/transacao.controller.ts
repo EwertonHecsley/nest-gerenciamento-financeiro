@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, Put, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put, Req, Res, UseGuards } from '@nestjs/common';
 import { TransacaoService } from './transacao.service';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guards';
 import { Request, Response } from 'express';
@@ -21,11 +21,20 @@ export class TransacaoController {
         return res.status(HttpStatus.CREATED).json(transacao);
     }
 
-    @Put()
-    async update(@Body() dataTransacao: TransacaoDto, @Req() req: Request, @Res() res: Response) {
+    @Put(':id')
+    async update(@Body() dataTransacao: TransacaoDto, @Param('id') transacao_id: string, @Req() req: Request, @Res() res: Response) {
         const { id } = req.user as UsuarioDto;
 
-        await this.transacaoService.update(id, dataTransacao);
+        await this.transacaoService.update(id, dataTransacao, parseInt(transacao_id));
+
+        return res.status(HttpStatus.NO_CONTENT).send();
+    }
+
+    @Delete(':id')
+    async deleteTransacao(@Param('id') transacao_id: string, @Req() req: Request, @Res() res: Response) {
+        const { id } = req.user as UsuarioDto;
+
+        await this.transacaoService.deleteTransacao(id, parseInt(transacao_id));
 
         return res.status(HttpStatus.NO_CONTENT).send();
     }
