@@ -39,6 +39,15 @@ export class TransacaoController {
         return res.status(HttpStatus.NO_CONTENT).send();
     }
 
+    @Get('/extrato')
+    async extrato(@Req() req: Request, @Res() res: Response) {
+        const { id } = req.user as UsuarioDto;
+
+        const extrato = await this.transacaoService.extrato(id);
+
+        return res.status(HttpStatus.OK).json(extrato);
+    }
+
     @Get(':id')
     async detalharTransacao(@Param('id') transacao_id: string, @Req() req: Request, @Res() res: Response) {
         const { id } = req.user as UsuarioDto;
