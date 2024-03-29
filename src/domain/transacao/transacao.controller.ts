@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, Put, Req, Res, UseGuards } from '@nestjs/common';
 import { TransacaoService } from './transacao.service';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guards';
 import { Request, Response } from 'express';
@@ -19,6 +19,15 @@ export class TransacaoController {
         const transacao = await this.transacaoService.create(id, dataTransacao);
 
         return res.status(HttpStatus.CREATED).json(transacao);
+    }
+
+    @Put()
+    async update(@Body() dataTransacao: TransacaoDto, @Req() req: Request, @Res() res: Response) {
+        const { id } = req.user as UsuarioDto;
+
+        await this.transacaoService.update(id, dataTransacao);
+
+        return res.status(HttpStatus.NO_CONTENT).send();
     }
 
     @Get(':id')

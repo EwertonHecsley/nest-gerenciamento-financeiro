@@ -22,4 +22,16 @@ export class TransacaoService {
 
         return await this.prismaService.transacao.create({ data: { descricao, valor, data_transacao, tipo, categoria_id, usuario_id: user_id } });
     }
+
+    async update(user_id: number, dataTransacao: TransacaoDto): Promise<TransacaoDto> {
+        const { descricao, valor, categoria_id, data_transacao, tipo } = dataTransacao;
+
+        const categoria = await this.prismaService.categoria.findFirst({ where: { id: categoria_id, usuario_id: user_id } });
+        if (!categoria) throw new HttpException('Categoria não encontrada.', HttpStatus.NOT_FOUND);
+
+        return await this.prismaService.transacao.update({
+            data: { descricao, valor, data_transacao, tipo, categoria_id, usuario_id: user_id },
+            where: { usuario_id: user_id, id: dataTransacao.id }
+        });
+    }
 }
